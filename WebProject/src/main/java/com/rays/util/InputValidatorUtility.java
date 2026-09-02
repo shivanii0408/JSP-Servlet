@@ -289,4 +289,103 @@ public class InputValidatorUtility {
 
 	    return pass;
 	}
+	
+	
+	public static boolean HotelValidator(HttpServletRequest request) {
+
+	    String hotelId = request.getParameter("hotelId");
+
+	    String hotelName = request.getParameter("hotelName");
+
+	    String location = request.getParameter("location");
+
+	    String rating = request.getParameter("rating");
+
+	    String contactNo = request.getParameter("contactNo");
+
+	    boolean pass = true;
+
+
+	   
+	    if (hotelId == null || hotelId.trim().equals("")) {
+
+	        pass = false;
+	        request.setAttribute("hotelId", "Hotel ID is required");
+
+	    } else if (!hotelId.matches("[0-9]+")) {
+
+	        pass = false;
+	        request.setAttribute("hotelId", "Hotel ID must contain only numbers");
+	    }
+
+
+	    if (hotelName == null || hotelName.trim().equals("")) {
+
+	        pass = false;
+	        request.setAttribute("hotelName", "hotelName is required");
+
+	    } else if (!hotelName.matches("[a-zA-Z ]+")) {
+
+	        pass = false;
+	        request.setAttribute("hotelName", "hotelName must contain only alphabets");
+
+	    } else if (hotelName.length() > 45) {
+
+	        pass = false;
+	        request.setAttribute("hotelName", "hotelName must not exceed 45 characters");
+	    }
+
+
+	    
+	    if (location == null || location.trim().equals("")) {
+
+	        pass = false;
+	        request.setAttribute("location", "location is required");
+
+	    } else if (!location.matches("[a-zA-Z ]+")) {
+
+	        pass = false;
+	        request.setAttribute("location", "location must contain only alphabets");
+
+	    } else if (location.length() > 45) {
+
+	        pass = false;
+	        request.setAttribute("location", "Location must not exceed 45 characters");
+	    }
+
+
+	   
+	    if (rating== null || rating.trim().equals("")) {
+
+	        pass = false;
+	        request.setAttribute("rating", "rating is required");
+
+	    } else if (!rating.matches("[0-9]+(\\.[0-9]+)?")) {
+
+	        pass = false;
+	        request.setAttribute("rating", "Rating must be a valid number");
+	    }
+
+	    
+
+	    if (contactNo == null || contactNo.trim().equals("")) {
+
+	        pass = false;
+	        request.setAttribute("contactNo", "contactNo is required");
+
+	    } else if (!contactNo.matches("[a-zA-Z ]+")) {
+
+	        pass = false;
+	        request.setAttribute("contactNo", "contactNo must contain only alphabets");
+
+	    } else if (contactNo.length() > 45) {
+
+	        pass = false;
+	        request.setAttribute("contactNo", "contactNo must not exceed 45 characters");
+	    }
+
+	 
+
+	    return pass;
+	}
 }

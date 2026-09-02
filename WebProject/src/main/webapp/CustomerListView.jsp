@@ -20,6 +20,11 @@
 	List<CustomerBean> list = (List<CustomerBean>) request.getAttribute("list");
 
 	Iterator<CustomerBean> it = list.iterator();
+	
+	String succ = (String) request.getAttribute("successMsg");
+	String err = (String) request.getAttribute("errorMsg");
+	
+	int pageNo = (int) request.getAttribute("pageNo");
 	%>
 
 	<%@ include file="Header.jsp"%>

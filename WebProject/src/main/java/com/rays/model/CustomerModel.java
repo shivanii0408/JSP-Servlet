@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.rays.bean.CustomerBean;
+import com.rays.bean.UserBean;
 import com.rays.util.JDBCDataSource;
 import com.rays.util.JDBCDataSource;
 
@@ -167,6 +168,41 @@ public class CustomerModel {
 
 		return list;
 	}	
+
+	public CustomerBean findByPk(int id) throws SQLException {
+
+		Connection conn = null;
+		CustomerBean bean = null;
+
+		try {
+
+			conn = JDBCDataSource.getConnection();
+
+			PreparedStatement pstmt = conn.prepareStatement("select * from customer_data where id = ?");
+
+			pstmt.setInt(1, id);
+
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				bean = new CustomerBean();
+				bean.setCustomerId(rs.getLong("customerId"));
+				bean.setCustomerName(rs.getString("firstName"));
+				bean.setEmail(rs.getString("lastName"));
+				bean.setPhoneNo(rs.getString("loginId"));
+				bean.setAddress(rs.getString("password"));
+				
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			conn.close();
+		}
+
+		return bean;
+
+	}
 
 	
 }

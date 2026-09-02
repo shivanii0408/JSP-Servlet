@@ -25,7 +25,22 @@ public class CustomerCtl extends HttpServlet {
 			throws ServletException, IOException {
 
 		System.out.println("this is doGet() method");
+	
+		CustomerBean bean= new CustomerBean();
+		CustomerModel model=new CustomerModel();
+		
+		String id = request.getParameter("id");
 
+		if (id != null) {
+			try {
+				bean = model.findByPk(Integer.parseInt(id));
+				request.setAttribute("bean", bean);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		
 		ServletUtility.forward("CustomerView.jsp", request, response);
 
 	}

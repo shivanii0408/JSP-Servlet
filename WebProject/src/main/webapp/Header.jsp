@@ -35,6 +35,9 @@
 	<a href="BookCtl">Add Book</a> |
 	<a href="BookListCtl">Book List</a> |
 	
+	<a href="HotelCtl">Add Hotel</a> |
+	<a href="HotelListCtl">Hotel List</a> |
+	
 	
 	<a href="LoginCtl?operation=logout">logout</a> |
 	<%
