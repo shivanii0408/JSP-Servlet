@@ -10,23 +10,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.rays.bean.HotelBean;
-import com.rays.model.HotelModel;
+import com.rays.bean.ProductBean;
+import com.rays.model.ProductModel;
 import com.rays.util.ServletUtility;
 
-@WebServlet("/HotelListCtl")
-public class HotelListCtl extends HttpServlet {
+@WebServlet("/ProductListCtl")
+public class ProductListCtl extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HotelBean bean = new HotelBean();
-        HotelModel model = new HotelModel();
+    	ProductBean bean = new ProductBean();
+    	ProductModel model = new ProductModel();
 
         try {
 
-            List<HotelBean> list =
+            List<ProductBean> list =
                     model.search(bean, 1, 5);
 
             request.setAttribute("list", list);
@@ -37,7 +38,7 @@ public class HotelListCtl extends HttpServlet {
         }
 
         ServletUtility.forward(
-                "HotelListView.jsp",
+                "ProductListView.jsp",
                 request,
                 response);
     }
@@ -47,8 +48,8 @@ public class HotelListCtl extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        HotelBean bean = new HotelBean();
-        HotelModel model = new HotelModel();
+    	ProductBean bean = new ProductBean();
+    	ProductModel model = new ProductModel();
 
         String op =
                 request.getParameter("operation");
@@ -90,19 +91,20 @@ public class HotelListCtl extends HttpServlet {
             }
         }
 
+        
         // SEARCH
         if ("search".equals(op)) {
 
-            bean.setHotelName(
-                    request.getParameter("hotelName"));
+            bean.setProductName(
+                    request.getParameter("productName"));
 
-            bean.setLocation(
-                    request.getParameter("location"));
+            bean.setCategory(
+                    request.getParameter("category"));
         }
 
         try {
 
-            List<HotelBean> list =
+            List<ProductBean> list =
                     model.search(bean, 1, 5);
 
             request.setAttribute(
@@ -114,8 +116,9 @@ public class HotelListCtl extends HttpServlet {
         }
 
         ServletUtility.forward(
-                "HotelListView.jsp",
+                "ProductListView.jsp",
                 request,
                 response);
     }
+       
 }

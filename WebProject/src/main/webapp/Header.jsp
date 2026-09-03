@@ -38,6 +38,9 @@
 	<a href="HotelCtl">Add Hotel</a> |
 	<a href="HotelListCtl">Hotel List</a> |
 	
+	<a href="ProductCtl">Add Product</a> |
+	<a href="ProductListCtl">Product List</a> |
+	
 	
 	<a href="LoginCtl?operation=logout">logout</a> |
 	<%

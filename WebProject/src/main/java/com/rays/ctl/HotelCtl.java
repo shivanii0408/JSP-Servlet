@@ -1,4 +1,3 @@
-
 package com.rays.ctl;
 
 import java.io.IOException;
@@ -17,68 +16,87 @@ import com.rays.util.ServletUtility;
 @WebServlet("/HotelCtl")
 public class HotelCtl extends HttpServlet {
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doGet(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-		System.out.println("this is doGet() method");
+        System.out.println("this is doGet() method");
 
-		ServletUtility.forward("HotelView.jsp", request, response);
-	}
+        ServletUtility.forward("HotelView.jsp", request, response);
+    }
 
-	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+    @Override
+    protected void doPost(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
 
-		System.out.println("this is doPost() method");
+        System.out.println("this is doPost() method");
 
-		HotelBean bean = new HotelBean();
-		HotelModel model = new HotelModel();
+        HotelBean bean = new HotelBean();
+        HotelModel model = new HotelModel();
 
-		Long hotelId = Long.parseLong(request.getParameter("hotelId"));
-		String hotelName = request.getParameter("hotelName");
-		String location = request.getParameter("location");
-		double rating = Integer.parseInt(request.getParameter("rating"));
-		String Contactno = request.getParameter("Contactno");
+        try {
 
-		try {
+            Long hotelId =
+                    Long.parseLong(request.getParameter("hotelId"));
 
-			bean.setHotelId(hotelId);
-			bean.setHotelName(hotelName);
-			bean.setLocation(location);
-			bean.setRating(rating);
-			bean.setContactNo(Contactno);
+            String hotelName =
+                    request.getParameter("hotelName");
 
-			model.add(bean);
+            String location =
+                    request.getParameter("location");
 
-			request.setAttribute("successMsg", "Hotel saved successfully");
+            Double rating =
+                    Double.parseDouble(request.getParameter("rating"));
 
-		} catch (Exception e) {
+            String contactNo =
+                    request.getParameter("contactNo");
 
-			request.setAttribute("errorMsg", "Hotel already exists");
+            bean.setHotelId(hotelId);
+            bean.setHotelName(hotelName);
+            bean.setLocation(location);
+            bean.setRating(rating);
+            bean.setContactNo(contactNo);
 
-			e.printStackTrace();
-		}
+            model.add(bean);
 
-		ServletUtility.forward("HotelView.jsp", request, response);
-	}
-	
-	@Override
-	protected void service(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
+            request.setAttribute("successMsg",
+                    "Hotel saved successfully");
 
-	    System.out.println("request method == " + request.getMethod());
+        } catch (Exception e) {
 
-	    if (request.getMethod().equalsIgnoreCase("POST")) {
+            request.setAttribute("errorMsg",
+                    "Hotel could not be saved");
 
-	        if (InputValidatorUtility.HotelValidator(request) == false) {
+            e.printStackTrace();
+        }
 
-	            ServletUtility.forward("HotelView.jsp", request, response);
-	            return;
-	        }
-	    }
+        ServletUtility.forward("HotelView.jsp",
+                request, response);
+    }
 
-	    super.service(request, response);
-	}
+    @Override
+    protected void service(HttpServletRequest request,
+            HttpServletResponse response)
+            throws ServletException, IOException {
+
+        System.out.println(
+                "request method == " + request.getMethod());
+
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+
+            if (InputValidatorUtility.HotelValidator(request) == false) {
+
+                ServletUtility.forward(
+                        "HotelView.jsp",
+                        request,
+                        response);
+
+                return;
+            }
+        }
+
+        super.service(request, response);
+    }
 }
-

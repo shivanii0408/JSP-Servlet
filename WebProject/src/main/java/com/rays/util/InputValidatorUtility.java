@@ -294,19 +294,14 @@ public class InputValidatorUtility {
 	public static boolean HotelValidator(HttpServletRequest request) {
 
 	    String hotelId = request.getParameter("hotelId");
-
 	    String hotelName = request.getParameter("hotelName");
-
 	    String location = request.getParameter("location");
-
 	    String rating = request.getParameter("rating");
-
 	    String contactNo = request.getParameter("contactNo");
 
 	    boolean pass = true;
 
-
-	   
+	    // Hotel ID validation
 	    if (hotelId == null || hotelId.trim().equals("")) {
 
 	        pass = false;
@@ -315,76 +310,77 @@ public class InputValidatorUtility {
 	    } else if (!hotelId.matches("[0-9]+")) {
 
 	        pass = false;
-	        request.setAttribute("hotelId", "Hotel ID must contain only numbers");
+	        request.setAttribute("hotelId",
+	                "Hotel ID must contain only numbers");
 	    }
 
-
+	    // Hotel Name validation
 	    if (hotelName == null || hotelName.trim().equals("")) {
 
 	        pass = false;
-	        request.setAttribute("hotelName", "hotelName is required");
+	        request.setAttribute("hotelName",
+	                "Hotel Name is required");
 
 	    } else if (!hotelName.matches("[a-zA-Z ]+")) {
 
 	        pass = false;
-	        request.setAttribute("hotelName", "hotelName must contain only alphabets");
+	        request.setAttribute("hotelName",
+	                "Hotel Name must contain only alphabets");
 
 	    } else if (hotelName.length() > 45) {
 
 	        pass = false;
-	        request.setAttribute("hotelName", "hotelName must not exceed 45 characters");
+	        request.setAttribute("hotelName",
+	                "Hotel Name must not exceed 45 characters");
 	    }
 
-
-	    
+	    // Location validation
 	    if (location == null || location.trim().equals("")) {
 
 	        pass = false;
-	        request.setAttribute("location", "location is required");
+	        request.setAttribute("location",
+	                "Location is required");
 
 	    } else if (!location.matches("[a-zA-Z ]+")) {
 
 	        pass = false;
-	        request.setAttribute("location", "location must contain only alphabets");
+	        request.setAttribute("location",
+	                "Location must contain only alphabets");
 
 	    } else if (location.length() > 45) {
 
 	        pass = false;
-	        request.setAttribute("location", "Location must not exceed 45 characters");
+	        request.setAttribute("location",
+	                "Location must not exceed 45 characters");
 	    }
 
-
-	   
-	    if (rating== null || rating.trim().equals("")) {
+	    // Rating validation
+	    if (rating == null || rating.trim().equals("")) {
 
 	        pass = false;
-	        request.setAttribute("rating", "rating is required");
+	        request.setAttribute("rating",
+	                "Rating is required");
 
 	    } else if (!rating.matches("[0-9]+(\\.[0-9]+)?")) {
 
 	        pass = false;
-	        request.setAttribute("rating", "Rating must be a valid number");
+	        request.setAttribute("rating",
+	                "Rating must be a valid number");
 	    }
 
-	    
-
+	    // Contact Number validation
 	    if (contactNo == null || contactNo.trim().equals("")) {
 
 	        pass = false;
-	        request.setAttribute("contactNo", "contactNo is required");
+	        request.setAttribute("contactNo",
+	                "Contact Number is required");
 
-	    } else if (!contactNo.matches("[a-zA-Z ]+")) {
-
-	        pass = false;
-	        request.setAttribute("contactNo", "contactNo must contain only alphabets");
-
-	    } else if (contactNo.length() > 45) {
+	    } else if (!contactNo.matches("[0-9]{10}")) {
 
 	        pass = false;
-	        request.setAttribute("contactNo", "contactNo must not exceed 45 characters");
+	        request.setAttribute("contactNo",
+	                "Contact Number must contain 10 digits");
 	    }
-
-	 
 
 	    return pass;
 	}

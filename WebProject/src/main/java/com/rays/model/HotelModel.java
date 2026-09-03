@@ -12,110 +12,233 @@ import com.rays.util.JDBCDataSource;
 
 public class HotelModel {
 
-	public void add(HotelBean bean) throws SQLException {
+    // ADD
+    public void add(HotelBean bean) throws SQLException {
 
-		Connection conn = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
-		try {
+        try {
 
-			conn = JDBCDataSource.getConnection();
+            conn = JDBCDataSource.getConnection();
 
-			conn.setAutoCommit(false);
+            String sql = "insert into hotel_data "
+                    + "(HotelId, HotelName, Location, Rating, ContactNo) "
+                    + "values (?, ?, ?, ?, ?)";
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"insert into hotel_data values(?, ?, ?, ?, ?)");
+            pstmt = conn.prepareStatement(sql);
 
-			pstmt.setLong(1, bean.getHotelId());
-			pstmt.setString(2, bean.getHotelName());
-			pstmt.setString(3, bean.getLocation());
-			pstmt.setDouble(4, bean.getRating());
-			pstmt.setString(5, bean.getContactNo());
+            pstmt.setLong(1, bean.getHotelId());
+            pstmt.setString(2, bean.getHotelName());
+            pstmt.setString(3, bean.getLocation());
+            pstmt.setDouble(4, bean.getRating());
+            pstmt.setString(5, bean.getContactNo());
 
-			int i = pstmt.executeUpdate();
+            int i = pstmt.executeUpdate();
 
-			conn.commit();
+            System.out.println(
+                    "record inserted successfully: " + i);
 
-			System.out.println("record inserted successfully: " + i);
+        } catch (Exception e) {
 
-		} catch (Exception e) {
+            e.printStackTrace();
 
-			e.printStackTrace();
-			conn.rollback();
+            throw new SQLException(
+                    "Hotel insertion failed", e);
 
-		} finally {
+        } finally {
 
-			conn.close();
-		}
-	}
+            if (pstmt != null) {
+                pstmt.close();
+            }
 
-	public void update(HotelBean bean) throws SQLException {
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 
-		Connection conn = null;
+    // UPDATE
+    public void update(HotelBean bean) throws SQLException {
 
-		try {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
-			conn = JDBCDataSource.getConnection();
+        try {
 
-			conn.setAutoCommit(false);
+            conn = JDBCDataSource.getConnection();
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"update hotel_data set HotelName = ?, Location = ?, Rating = ?, ContactNo = ? where HotelId = ?");
+            String sql = "update hotel_data set "
+                    + "HotelName = ?, "
+                    + "Location = ?, "
+                    + "Rating = ?, "
+                    + "ContactNo = ? "
+                    + "where HotelId = ?";
 
-			pstmt.setLong(1, bean.getHotelId());
-			pstmt.setString(2, bean.getHotelName());
-			pstmt.setString(3, bean.getLocation());
-			pstmt.setDouble(4, bean.getRating());
-			pstmt.setString(5, bean.getContactNo());
-			int i = pstmt.executeUpdate();
+            pstmt = conn.prepareStatement(sql);
 
-			conn.commit();
+            pstmt.setString(1, bean.getHotelName());
+            pstmt.setString(2, bean.getLocation());
+            pstmt.setDouble(3, bean.getRating());
+            pstmt.setString(4, bean.getContactNo());
+            pstmt.setLong(5, bean.getHotelId());
 
-			System.out.println("record updated successfully: " + i);
+            int i = pstmt.executeUpdate();
 
-		} catch (Exception e) {
+            System.out.println(
+                    "record updated successfully: " + i);
 
-			e.printStackTrace();
-			conn.rollback();
+        } finally {
 
-		} finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
 
-			conn.close();
-		}
-	}
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 
-	public void delete(int id) throws SQLException {
+    // DELETE
+    public void delete(Long id) throws SQLException {
 
-		Connection conn = null;
+        Connection conn = null;
+        PreparedStatement pstmt = null;
 
-		try {
+        try {
 
-			conn = JDBCDataSource.getConnection();
+            conn = JDBCDataSource.getConnection();
 
-			conn.setAutoCommit(false);
+            String sql =
+                    "delete from hotel_data where HotelId = ?";
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"delete from hotel_data where hotelId = ?");
+            pstmt = conn.prepareStatement(sql);
 
-			pstmt.setInt(1, id);
+            pstmt.setLong(1, id);
 
-			int i = pstmt.executeUpdate();
+            int i = pstmt.executeUpdate();
 
-			conn.commit();
+            System.out.println(
+                    "record deleted successfully: " + i);
 
-			System.out.println("record deleted successfully: " + i);
+        } finally {
 
-		} catch (Exception e) {
+            if (pstmt != null) {
+                pstmt.close();
+            }
 
-			e.printStackTrace();
-			conn.rollback();
+            if (conn != null) {
+                conn.close();
+            }
+        }
+    }
 
-		} finally {
+    // SEARCH
+    public List<HotelBean> search(
+            HotelBean bean,
+            int pageNo,
+            int pageSize) throws SQLException {
 
-			conn.close();
-		}
-	}
+        List<HotelBean> list =
+                new ArrayList<HotelBean>();
 
-	
+        StringBuffer sql =
+                new StringBuffer(
+                        "select * from hotel_data where 1=1");
 
-	
+        if (bean != null) {
+
+            if (bean.getHotelId() != null
+                    && bean.getHotelId() > 0) {
+
+                sql.append(
+                        " and HotelId = "
+                        + bean.getHotelId());
+            }
+
+            if (bean.getHotelName() != null
+                    && bean.getHotelName().length() > 0) {
+
+                sql.append(
+                        " and HotelName like '"
+                        + bean.getHotelName()
+                        + "%'");
+            }
+
+            if (bean.getLocation() != null
+                    && bean.getLocation().length() > 0) {
+
+                sql.append(
+                        " and Location like '"
+                        + bean.getLocation()
+                        + "%'");
+            }
+        }
+
+        int pageNoIndex =
+                (pageNo - 1) * pageSize;
+
+        sql.append(
+                " limit "
+                + pageNoIndex
+                + ", "
+                + pageSize);
+
+        System.out.println(
+                "sql===> " + sql);
+
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+
+            conn = JDBCDataSource.getConnection();
+
+            pstmt = conn.prepareStatement(
+                    sql.toString());
+
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+
+                HotelBean hBean =
+                        new HotelBean();
+
+                hBean.setHotelId(
+                        rs.getLong("HotelId"));
+
+                hBean.setHotelName(
+                        rs.getString("HotelName"));
+
+                hBean.setLocation(
+                        rs.getString("Location"));
+
+                hBean.setRating(
+                        rs.getDouble("Rating"));
+
+                hBean.setContactNo(
+                        rs.getString("ContactNo"));
+
+                list.add(hBean);
+            }
+
+        } finally {
+
+            if (rs != null) {
+                rs.close();
+            }
+
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+        }
+
+        return list;
+    }
 }

@@ -1,6 +1,6 @@
 <%@page import="java.util.Iterator"%>
 <%@page import="java.util.List"%>
-<%@page import="com.rays.bean.HotelBean"%>
+<%@page import="com.rays.bean.ProductBean"%>
 
 <%@ page language="java"
     contentType="text/html; charset=ISO-8859-1"
@@ -14,7 +14,7 @@
 
 <meta charset="ISO-8859-1">
 
-<title>Hotel List</title>
+<title>Product List</title>
 
 </head>
 
@@ -24,14 +24,14 @@
 
 <div align="center">
 
-    <h1>Hotel List</h1>
+    <h1>Product List</h1>
 
-    <form action="HotelListCtl" method="post">
+    <form action="ProductListCtl" method="post">
 
         <%
 
-        List<HotelBean> list =
-                (List<HotelBean>) request.getAttribute("list");
+        List<ProductBean> list =
+                (List<ProductBean>) request.getAttribute("list");
 
         if (list != null) {
 
@@ -48,26 +48,26 @@
 
                 </th>
 
-                <th>Hotel Id</th>
+                <th>Product Id</th>
 
-                <th>Hotel Name</th>
+                <th>Product Name</th>
 
-                <th>Location</th>
+                <th>Price</th>
 
-                <th>Rating</th>
+                <th>Quantity</th>
 
-                <th>Contact No</th>
+                <th>Category</th>
 
             </tr>
 
             <%
 
-            Iterator<HotelBean> it =
+            Iterator<ProductBean> it =
                     list.iterator();
 
             while (it.hasNext()) {
 
-                HotelBean bean =
+            	ProductBean bean =
                         it.next();
 
             %>
@@ -79,28 +79,28 @@
 
                     <input type="checkbox"
                            name="ids"
-                           value="<%=bean.getHotelId()%>">
+                           value="<%=bean.getProductId()%>">
 
                 </td>
 
                 <td>
-                    <%=bean.getHotelId()%>
+                    <%=bean.getProductId()%>
                 </td>
 
                 <td>
-                    <%=bean.getHotelName()%>
+                    <%=bean.getProductName()%>
                 </td>
 
                 <td>
-                    <%=bean.getLocation()%>
+                    <%=bean.getPrice()%>
                 </td>
 
                 <td>
-                    <%=bean.getRating()%>
+                    <%=bean.getQuantity()%>
                 </td>
 
                 <td>
-                    <%=bean.getContactNo()%>
+                    <%=bean.getCategory()%>
                 </td>
 
             </tr>

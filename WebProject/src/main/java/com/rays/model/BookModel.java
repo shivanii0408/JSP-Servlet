@@ -14,38 +14,48 @@ public class BookModel {
 
 	public void add(BookBean bean) throws SQLException {
 
-		Connection conn = null;
+	    Connection conn = null;
+	    PreparedStatement pstmt = null;
 
-		try {
+	    try {
 
-			conn = JDBCDataSource.getConnection();
+	        conn = JDBCDataSource.getConnection();
 
-			conn.setAutoCommit(false);
+	        conn.setAutoCommit(false);
 
-			PreparedStatement pstmt = conn.prepareStatement(
-					"insert into book_data values(?, ?, ?, ?, ?)");
+	        pstmt = conn.prepareStatement(
+	                "insert into book_data values(?, ?, ?, ?, ?)");
 
-			pstmt.setInt(1, bean.getBookId());
-			pstmt.setString(2, bean.getTitle());
-			pstmt.setString(3, bean.getAuthor());
-			pstmt.setInt(4, bean.getPrice());
-			pstmt.setInt(5, bean.getPublicationYear());
+	        pstmt.setInt(1, bean.getBookId());
+	        pstmt.setString(2, bean.getTitle());
+	        pstmt.setString(3, bean.getAuthor());
+	        pstmt.setInt(4, bean.getPrice());
+	        pstmt.setInt(5, bean.getPublicationYear());
 
-			int i = pstmt.executeUpdate();
+	        int i = pstmt.executeUpdate();
 
-			conn.commit();
+	        conn.commit();
 
-			System.out.println("record inserted successfully: " + i);
+	        System.out.println("Record inserted successfully: " + i);
 
-		} catch (Exception e) {
+	    } catch (Exception e) {
 
-			e.printStackTrace();
-			conn.rollback();
+	        e.printStackTrace();
 
-		} finally {
+	        if (conn != null) {
+	            conn.rollback();
+	        }
 
-			conn.close();
-		}
+	    } finally {
+
+	        if (pstmt != null) {
+	            pstmt.close();
+	        }
+
+	        if (conn != null) {
+	            conn.close();
+	        }
+	    }
 	}
 
 	public void update(BookBean bean) throws SQLException {
